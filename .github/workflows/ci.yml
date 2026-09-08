@@ -11,6 +11,7 @@ on:
       - 'pitch/**'
       - 'empires/**'
       - 'garden/**'
+      - 'zelda2mario/**'
       - 'api/**'
       - 'index.html'
       - 'assets/previews/**'
@@ -47,3 +48,4 @@ jobs:
       - run: npm run smoke:play
       - run: npm run smoke:catalog
       - run: npm run smoke:landing
+      - run: npm run smoke:zelda2mario

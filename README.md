@@ -29,6 +29,7 @@ npm test          # node --test — combat math + MarsScape engine/API/handler t
 npm run smoke:play      # fighter resume/snapshot smoke test
 npm run smoke:catalog   # catalog runtime smoke tests
 npm run smoke:landing   # five-width landing, keyboard, motion, hit targets, screenshots
+npm run smoke:zelda2mario # status scope, mobile/ultrawide, themes, keyboard tabs, filters and complete printing
 npm run start:mars      # run the MarsScape authority server locally (SQLite) — http://localhost:8787/mars/
 npm run vercel-build    # syntax-check all api/ and mars/ server files (what Vercel's build runs)
 npm run art:validate    # validate DEC-79 and verify the runtime index plus strict-report parity
@@ -48,6 +49,27 @@ post-deployment readback, run
 `LANDING_BASE_URL=https://mixmash.games/ npm run smoke:landing`.
 Gameplay-preview provenance and refresh guidance live in
 [`assets/previews/README.md`](assets/previews/README.md).
+
+### Zelda2Mario status publication
+
+`zelda2mario/index.html` is an exact public-safe copy of the game's canonical
+`docs/status/zelda2mario-project-status.html`, not a separate status source.
+Edit the canonical embedded `status-data` block, validate its eleven phases and
+six M2 actions against the implementation plan, then copy the complete reviewed
+HTML here. Preserve the source baseline and evidence timestamp; never infer game
+completion from a documentation deployment. Reconcile the project-owned Notion
+records through targeted dated updates, keeping private links out of this file.
+
+Publish through a scoped PR into `gh-pages` after applicable CI succeeds.
+Legacy Pages deploys independently, so do not bypass the pre-merge CI gate.
+Verify canonical/published SHA-256 parity, Pages success, the slash redirect,
+and live rendering. The browser check covers 320, 390, 768, 1440 and 2560x720,
+all work fields, keyboard tabs, light/dark persistence, filters and full printing.
+Screenshots and a JSON report go to the temporary directory printed at exit.
+Use `ZELDA2MARIO_SCREENSHOT_DIR` to retain a chosen evidence location; use
+`ZELDA2MARIO_BASE_URL=https://mixmash.games/zelda2mario/ npm run smoke:zelda2mario`
+for live verification. Roll back a faulty route with a scoped revert PR; do not
+alter other game routes, the authority API, hosting configuration or ROM data.
 
 ## MarsScape's architecture (as of 2026-08-27)
 
