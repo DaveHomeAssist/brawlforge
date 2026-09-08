@@ -1,429 +1,755 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" data-theme="light">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="theme-color" content="#0d141b">
-  <meta name="description" content="Evidence-bound project status for Zelda2MarioCoop, the source-only Zelda II and Mario co-op ROM-hacking project.">
-  <title>Zelda2MarioCoop / Project Status</title>
+  <meta name="color-scheme" content="light dark">
+  <meta name="theme-color" content="#f3f5ef">
+  <meta name="description" content="Zelda2MarioCoop project ledger: verified milestones, all eleven phases, six M2 gates, and the remaining runtime and release work.">
+  <link rel="canonical" href="https://mixmash.games/zelda2mario/">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='12' fill='%23183e3b'/%3E%3Cpath d='M16 16h32v8L28 40h20v8H16v-8l20-16H16z' fill='%23e6f7ba'/%3E%3C/svg%3E">
+  <title>Zelda2MarioCoop — Project Ledger</title>
   <style>
-    :root {
-      --bg: #0b1117;
-      --bg-deep: #081016;
-      --panel: #111c26;
-      --panel-raised: #172632;
-      --line: #2b4650;
-      --line-soft: rgba(117, 180, 181, .17);
-      --text: #edf3e9;
-      --muted: #9bb2b3;
-      --dim: #6d858b;
-      --mint: #83e3c7;
-      --cyan: #78d6ea;
-      --amber: #f6c76d;
-      --red: #ff6f6d;
-      --green: #9be287;
-      --shadow: 0 18px 60px rgba(0, 0, 0, .25);
-      --radius: 14px;
-      color-scheme: dark;
-      font-family: "SFMono-Regular", "Roboto Mono", "Cascadia Code", monospace;
+    :root { color-scheme: light; --bg:#f3f5ef; --panel:#fff; --surface:#e8eee5; --text:#182f30; --muted:#4e6262; --line:#cad6cd; --accent:#175d51; --accent-soft:#ddefdf; --red:#992e29; --red-soft:#fbece6; --amber:#755100; --focus:#98410e; --shadow:0 8px 24px #183c3010; font:16px/1.5 "Avenir Next",Avenir,"Segoe UI",sans-serif; }
+    :root[data-theme="dark"] { color-scheme:dark; --bg:#0d171c; --panel:#14232a; --surface:#1c3036; --text:#eef4e9; --muted:#b0c5c3; --line:#3c5558; --accent:#9de4c8; --accent-soft:#203f37; --red:#ffb5a5; --red-soft:#402725; --amber:#f0d38a; --focus:#ffd39d; --shadow:none; }
+    * { box-sizing:border-box; min-width:0; }
+    body { margin:0; background:var(--bg); color:var(--text); }
+    ::selection { background:var(--accent); color:var(--panel); }
+    a { color:var(--accent); text-underline-offset:.2em; }
+    a:hover { text-decoration-thickness:2px; }
+    button,input,select { font:inherit; }
+    button,select { cursor:pointer; }
+    button { min-height:44px; padding:.55rem .85rem; border:1px solid var(--line); border-radius:8px; color:var(--text); background:var(--panel); }
+    button:hover { border-color:var(--accent); background:var(--surface); }
+    :focus-visible { outline:3px solid var(--focus); outline-offset:3px; }
+    [hidden] { display:none !important; }
+    .sr-only { position:absolute; width:1px; height:1px; overflow:hidden; clip-path:inset(50%); white-space:nowrap; }
+    .skip { position:fixed; left:1rem; top:-5rem; z-index:5; padding:.75rem; background:var(--panel); }
+    .skip:focus { top:1rem; }
+    .app { height:100vh; height:100dvh; display:grid; grid-template-rows:auto auto minmax(0,1fr) auto; gap:1rem; padding:1.25rem clamp(.8rem,2vw,2.5rem) .65rem; }
+    .masthead { display:flex; align-items:center; justify-content:space-between; gap:1rem; }
+    .brand { display:flex; gap:.85rem; align-items:center; }
+    .mark { flex:none; display:grid; place-items:center; width:48px; height:48px; border-radius:10px; background:var(--text); color:var(--bg); font:800 1.6rem/1 ui-monospace,monospace; }
+    .eyebrow,.kicker,thead th { font:700 .69rem/1.4 ui-monospace,SFMono-Regular,monospace; text-transform:uppercase; letter-spacing:.1em; color:var(--muted); }
+    h1 { margin:.2rem 0 0; font-size:clamp(1.3rem,2.4vw,2rem); letter-spacing:-.05em; line-height:1.15; overflow-wrap:anywhere; }
+    .header-actions { display:flex; align-items:center; gap:.55rem; flex:none; }
+    .back { display:inline-flex; align-items:center; min-height:44px; padding:.5rem; font-size:.82rem; }
+    .tabbar { display:flex; align-items:center; gap:.35rem; padding:.3rem; border:1px solid var(--line); border-radius:12px; background:var(--panel); }
+    .tabbar button { flex:1; border:0; background:transparent; color:var(--muted); border-radius:8px; font-weight:650; }
+    .tabbar button[aria-selected="true"] { background:var(--text); color:var(--bg); }
+    main { min-height:0; }
+    .tabpanel { height:100%; overflow:auto; padding:.15rem .3rem 1rem; scrollbar-color:var(--line) transparent; scrollbar-gutter:stable; overscroll-behavior:contain; }
+    .section-head { display:flex; justify-content:space-between; align-items:end; flex-wrap:wrap; gap:.7rem; margin:.3rem 0 1.2rem; }
+    h2 { margin:.25rem 0; font-size:clamp(1.55rem,2.8vw,2.45rem); letter-spacing:-.05em; line-height:1.13; overflow-wrap:anywhere; }
+    h3 { margin:0 0 .65rem; font-size:1.12rem; letter-spacing:-.025em; }
+    p { margin:.5rem 0; }
+    .intro { max-width:72ch; color:var(--muted); font-size:.94rem; }
+    .card { padding:clamp(1rem,1.7vw,1.5rem); border:1px solid var(--line); border-radius:12px; background:var(--panel); box-shadow:var(--shadow); overflow-wrap:anywhere; }
+    .overview-grid { display:grid; grid-template-columns:minmax(0,1.25fr) minmax(0,1fr); align-items:start; gap:1rem; }
+    .overview-main { grid-column:1/-1; display:grid; grid-template-columns:minmax(0,1.4fr) minmax(0,1fr); gap:1.5rem; border-top:4px solid var(--accent); }
+    .overview-main h2 { font-size:clamp(2rem,4vw,3.8rem); max-width:18ch; }
+    .signal { padding:1.1rem; border:1px solid var(--red); border-radius:9px; background:var(--red-soft); align-self:stretch; display:flex; flex-direction:column; justify-content:center; }
+    .signal p { font-size:.93rem; color:var(--red); }
+    .chip { display:inline-block; width:fit-content; max-width:100%; padding:.2rem .5rem; border:1px solid currentColor; border-radius:5px; font:700 .7rem/1.4 ui-monospace,monospace; white-space:normal; color:var(--muted); }
+    .chip[data-status="Complete"],.chip[data-status="Passed"] { color:var(--accent); background:var(--accent-soft); }
+    .chip[data-status="Blocked"],.chip[data-status="Failed"] { color:var(--red); background:var(--red-soft); }
+    .chip[data-status="In Progress"] { color:var(--amber); }
+    .metrics { display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:.6rem; margin:1rem 0; }
+    .metric { padding:1rem; border:1px solid var(--line); border-radius:9px; background:var(--surface); }
+    .metric strong { display:block; font-size:1.8rem; letter-spacing:-.05em; }
+    .metric span { color:var(--muted); font-size:.76rem; }
+    .gate-list { display:grid; gap:.75rem; }
+    .gate { display:grid; grid-template-columns:minmax(0,1fr) auto; gap:.2rem .75rem; padding-bottom:.7rem; border-bottom:1px solid var(--line); }
+    .gate:last-child { border:0; padding:0; }
+    .gate p { grid-column:1/-1; color:var(--muted); font-size:.87rem; }
+    .next-list { padding:0 0 0 1.3rem; margin:0; }
+    .next-list li { padding:.4rem 0; }
+    .next-list span { display:block; color:var(--muted); font-size:.85rem; }
+    .phase-board { display:grid; grid-template-columns:repeat(6,minmax(0,1fr)); gap:.5rem; }
+    .phase-tile { padding:.65rem; background:var(--surface); border-radius:7px; border-top:3px solid var(--line); }
+    .phase-tile[data-status="Complete"] { border-top-color:var(--accent); }
+    .phase-tile[data-status="In Progress"] { border-top-color:var(--amber); }
+    .phase-tile[data-status="Blocked"] { border-top-color:var(--red); }
+    .phase-tile strong { display:block; font:700 1.3rem ui-monospace,monospace; }
+    .phase-tile span { display:block; color:var(--muted); font-size:.69rem; }
+    .wide-card { grid-column:1/-1; }
+    .timeline { list-style:none; margin:0; padding:0; display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:1rem; }
+    .event { display:grid; grid-template-columns:auto minmax(0,1fr); gap:.8rem; }
+    .event-number { color:var(--accent); font:700 1.5rem ui-monospace,monospace; }
+    .event time { display:block; color:var(--muted); font:500 .74rem ui-monospace,monospace; margin-bottom:.5rem; }
+    .event h3 { font-size:1rem; }
+    .event p { color:var(--muted); font-size:.86rem; }
+    .filters { display:flex; flex-wrap:wrap; align-items:end; gap:.65rem; margin:0 0 .75rem; }
+    .filters label { display:grid; gap:.25rem; color:var(--muted); font-size:.78rem; }
+    .filters input,.filters select { min-height:44px; border:1px solid var(--line); border-radius:7px; background:var(--panel); color:var(--text); padding:.5rem .7rem; max-width:100%; }
+    .filters input { width:22rem; }
+    .count { color:var(--muted); font-size:.8rem; min-height:1.4rem; }
+    .table-section { margin:1.25rem 0 2rem; }
+    .table-section h3 { margin-bottom:.4rem; }
+    .table-note { color:var(--muted); font-size:.82rem; margin-bottom:.65rem; }
+    table { width:100%; border-collapse:collapse; background:var(--panel); table-layout:fixed; border:1px solid var(--line); }
+    th,td { padding:.8rem; text-align:left; vertical-align:top; border-bottom:1px solid var(--line); overflow-wrap:anywhere; }
+    thead th { background:var(--surface); }
+    td { font-size:.86rem; }
+    th:first-child { width:23%; }
+    th:nth-child(2) { width:12%; }
+    th:nth-child(3) { width:21%; }
+    th:nth-child(4) { width:15%; }
+    td strong { display:block; font-weight:650; }
+    td small { display:block; margin-top:.3rem; color:var(--muted); font-size:.78rem; }
+    .evidence-grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:1rem; }
+    .evidence-grid dt { font-weight:700; margin-bottom:.5rem; }
+    .evidence-grid dd { margin:0; }
+    code { font:500 .8rem/1.5 ui-monospace,SFMono-Regular,monospace; overflow-wrap:anywhere; }
+    .evidence-grid p { color:var(--muted); font-size:.86rem; }
+    .notice { padding:.9rem 1rem; border-left:3px solid var(--accent); background:var(--surface); color:var(--muted); font-size:.85rem; margin:1rem 0; }
+    footer { display:flex; justify-content:space-between; gap:1rem; color:var(--muted); font:500 .68rem/1.4 ui-monospace,monospace; }
+    @media(min-width:1900px) {
+      .overview-grid { grid-template-columns:minmax(0,1.35fr) repeat(2,minmax(0,1fr)); }
+      .overview-main { grid-column:auto; display:block; }
+      .overview-main .signal { margin-top:1.25rem; }
+      .wide-card { grid-column:1/-1; }
+      .phase-board { grid-template-columns:repeat(11,minmax(0,1fr)); }
+      .timeline,.evidence-grid { grid-template-columns:repeat(3,minmax(0,1fr)); }
     }
-
-    * { box-sizing: border-box; }
-
-    html { scroll-behavior: smooth; }
-
-    body {
-      margin: 0;
-      min-width: 320px;
-      color: var(--text);
-      background:
-        radial-gradient(circle at 18% 0%, rgba(88, 184, 187, .11), transparent 32rem),
-        radial-gradient(circle at 95% 18%, rgba(255, 111, 109, .08), transparent 28rem),
-        linear-gradient(rgba(120, 214, 234, .035) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(120, 214, 234, .035) 1px, transparent 1px),
-        var(--bg);
-      background-size: auto, auto, 32px 32px, 32px 32px, auto;
-      line-height: 1.55;
+    @media(max-width:900px) {
+      .overview-grid,.overview-main,.timeline,.evidence-grid { grid-template-columns:minmax(0,1fr); }
+      .overview-main,.wide-card { grid-column:auto; }
+      .phase-board { grid-template-columns:repeat(4,minmax(0,1fr)); }
+      table,tbody { display:block; border:0; background:transparent; }
+      thead { position:absolute; width:1px; height:1px; clip-path:inset(50%); overflow:hidden; }
+      tbody tr { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); margin:.75rem 0; border:1px solid var(--line); border-radius:9px; background:var(--panel); }
+      td { display:block; width:auto; border:0; padding:.65rem .8rem; }
+      td::before { content:attr(data-label); display:block; font:700 .66rem/1.5 ui-monospace,monospace; text-transform:uppercase; color:var(--muted); margin-bottom:.35rem; }
+      td:first-child,td:last-child { grid-column:1/-1; }
+      td:first-child { border-bottom:1px solid var(--line); }
     }
-
-    body::before {
-      position: fixed;
-      inset: 0;
-      z-index: -1;
-      pointer-events: none;
-      content: "";
-      background: repeating-linear-gradient(0deg, rgba(255,255,255,.017) 0, rgba(255,255,255,.017) 1px, transparent 1px, transparent 4px);
-      mix-blend-mode: screen;
-      opacity: .25;
+    @media(max-width:600px) {
+      .app { gap:.65rem; padding:.7rem .55rem 0; grid-template-rows:auto minmax(0,1fr) auto; }
+      .masthead { align-items:start; gap:.4rem; }
+      .brand { gap:.45rem; }
+      .mark { width:32px; height:36px; font-size:1.25rem; }
+      .eyebrow { font-size:.58rem; letter-spacing:.04em; }
+      .header-actions { gap:.2rem; }
+      .header-actions button { padding:.45rem .55rem; font-size:.76rem; }
+      .back { display:none; }
+      .tabbar { grid-row:3; padding:.25rem .15rem calc(.25rem + env(safe-area-inset-bottom)); border-radius:10px 10px 0 0; }
+      .tabbar button { font-size:.72rem; padding:.55rem .15rem; min-height:48px; }
+      main { grid-row:2; }
+      footer { display:none; }
+      .tabpanel { padding:.1rem .15rem .7rem; scrollbar-gutter:auto; }
+      .metrics { grid-template-columns:repeat(2,minmax(0,1fr)); }
+      .metric strong { font-size:1.5rem; }
+      .phase-board { grid-template-columns:repeat(3,minmax(0,1fr)); }
+      .filters label,.filters input,.filters select { width:100%; }
+      .filters { gap:.5rem; }
+      .event { gap:.6rem; }
     }
-
-    a { color: var(--cyan); text-decoration-color: rgba(120, 214, 234, .45); text-underline-offset: .2em; }
-    a:hover { color: var(--mint); }
-    button, a { -webkit-tap-highlight-color: transparent; }
-    :focus-visible { outline: 3px solid var(--amber); outline-offset: 3px; }
-
-    .skip-link {
-      position: absolute;
-      left: 1rem;
-      top: -4rem;
-      z-index: 10;
-      padding: .65rem .9rem;
-      color: var(--bg);
-      background: var(--mint);
-      border-radius: 6px;
-    }
-
-    .skip-link:focus { top: 1rem; }
-
-    .shell {
-      width: min(1240px, calc(100% - 2rem));
-      margin: 0 auto;
-      padding: 2.25rem 0 3rem;
-    }
-
-    .eyebrow, .label, .section-kicker, th, .status-chip, .metric-label, .timeline-date {
-      font-size: .68rem;
-      font-weight: 700;
-      letter-spacing: .13em;
-      text-transform: uppercase;
-    }
-
-    .eyebrow { color: var(--mint); }
-
-    .hero {
-      position: relative;
-      overflow: hidden;
-      padding: clamp(1.35rem, 4vw, 3rem);
-      border: 1px solid var(--line);
-      border-radius: calc(var(--radius) + 4px);
-      background: linear-gradient(135deg, rgba(23, 38, 50, .94), rgba(13, 20, 27, .94));
-      box-shadow: var(--shadow);
-    }
-
-    .hero::after {
-      position: absolute;
-      right: -9rem;
-      bottom: -12rem;
-      width: 26rem;
-      height: 26rem;
-      content: "";
-      border: 1px solid rgba(131, 227, 199, .18);
-      border-radius: 50%;
-      box-shadow: 0 0 0 1.5rem rgba(131, 227, 199, .03), 0 0 0 3rem rgba(131, 227, 199, .02);
-    }
-
-    .hero-grid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(260px, 340px); gap: 2rem; align-items: end; }
-    h1 { max-width: 800px; margin: .4rem 0 1rem; font-family: Inter, ui-sans-serif, system-ui, sans-serif; font-size: clamp(2.5rem, 7vw, 5.7rem); line-height: .95; letter-spacing: -.07em; font-weight: 800; }
-    .lede { max-width: 760px; margin: 0; color: var(--muted); font-size: clamp(.95rem, 1.5vw, 1.13rem); }
-
-    .signal-card {
-      position: relative;
-      z-index: 1;
-      padding: 1rem 1.1rem;
-      border: 1px solid rgba(255, 111, 109, .5);
-      border-radius: 10px;
-      background: rgba(86, 25, 27, .33);
-    }
-
-    .signal-top { display: flex; align-items: center; justify-content: space-between; gap: 1rem; }
-    .signal-word { color: var(--red); font-family: Inter, ui-sans-serif, system-ui, sans-serif; font-size: 2.5rem; line-height: 1; letter-spacing: -.06em; font-weight: 900; }
-    .pulse { width: .7rem; height: .7rem; border-radius: 50%; background: var(--red); box-shadow: 0 0 0 .3rem rgba(255, 111, 109, .13); }
-    .signal-card p { margin: .85rem 0 0; color: #ffc2bd; font-size: .76rem; }
-
-    .hero-meta { display: flex; flex-wrap: wrap; gap: .55rem; margin-top: 1.7rem; }
-    .meta-pill { padding: .42rem .65rem; border: 1px solid var(--line); border-radius: 999px; color: var(--muted); background: rgba(4, 10, 14, .28); font-size: .7rem; }
-    .meta-pill strong { color: var(--text); font-weight: 700; }
-
-    .section-nav { display: flex; flex-wrap: wrap; gap: .45rem; margin-top: 1.2rem; }
-    .section-nav a { padding: .25rem .45rem; color: var(--dim); font-size: .7rem; text-decoration: none; }
-    .section-nav a:hover { color: var(--mint); }
-
-    .metrics { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: .75rem; margin: 1rem 0; }
-    .metric { padding: 1rem; border: 1px solid var(--line-soft); border-radius: var(--radius); background: rgba(17, 28, 38, .76); }
-    .metric-value { display: block; margin-top: .3rem; color: var(--text); font-family: Inter, ui-sans-serif, system-ui, sans-serif; font-size: 2rem; font-weight: 800; letter-spacing: -.06em; }
-    .metric-label { color: var(--dim); }
-    .metric-note { margin: .2rem 0 0; color: var(--muted); font-size: .72rem; }
-
-    .panel { margin-top: 1rem; padding: clamp(1rem, 2.5vw, 1.6rem); border: 1px solid var(--line); border-radius: var(--radius); background: rgba(17, 28, 38, .84); box-shadow: 0 10px 36px rgba(0,0,0,.12); }
-    .panel-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1rem; }
-    .section-heading { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: end; gap: 1rem; margin-bottom: 1rem; }
-    .section-kicker { color: var(--cyan); }
-    h2, h3 { margin: .25rem 0 0; font-family: Inter, ui-sans-serif, system-ui, sans-serif; letter-spacing: -.04em; }
-    h2 { font-size: clamp(1.25rem, 3vw, 1.85rem); }
-    h3 { font-size: 1rem; }
-    .section-intro { max-width: 760px; margin: .45rem 0 0; color: var(--muted); font-size: .84rem; }
-
-    .evidence-list { display: grid; gap: .6rem; margin: 0; }
-    .evidence-item { display: grid; grid-template-columns: 120px minmax(0, 1fr); gap: .8rem; padding-bottom: .6rem; border-bottom: 1px solid var(--line-soft); }
-    .evidence-item:last-child { padding-bottom: 0; border-bottom: 0; }
-    .evidence-item dt { color: var(--dim); font-size: .7rem; text-transform: uppercase; letter-spacing: .08em; }
-    .evidence-item dd { margin: 0; color: var(--text); font-size: .8rem; }
-    .evidence-item dd small { display: block; color: var(--muted); font-size: .72rem; }
-
-    .legend { display: flex; flex-wrap: wrap; gap: .45rem; margin-top: .7rem; }
-    .status-chip { display: inline-flex; align-items: center; gap: .4rem; width: fit-content; padding: .28rem .48rem; border: 1px solid currentColor; border-radius: 999px; font-size: .61rem; letter-spacing: .08em; white-space: nowrap; }
-    .status-chip::before { width: .38rem; height: .38rem; content: ""; border-radius: 50%; background: currentColor; }
-    .status-complete { color: var(--green); }
-    .status-in-progress { color: var(--amber); }
-    .status-blocked { color: var(--red); }
-    .status-not-started { color: var(--dim); }
-    .status-open { color: var(--cyan); }
-
-    .timeline { position: relative; display: grid; gap: 0; margin-top: 1.3rem; }
-    .timeline::before { position: absolute; top: .65rem; bottom: .65rem; left: .42rem; width: 1px; content: ""; background: linear-gradient(var(--mint), var(--line), var(--red)); }
-    .timeline-item { position: relative; display: grid; grid-template-columns: 9rem minmax(0, 1fr); gap: 1rem; padding: 0 0 1.25rem 1.6rem; }
-    .timeline-item:last-child { padding-bottom: 0; }
-    .timeline-item::before { position: absolute; left: 0; top: .36rem; width: .88rem; height: .88rem; content: ""; border: 2px solid var(--bg); border-radius: 50%; background: var(--mint); box-shadow: 0 0 0 1px var(--mint); }
-    .timeline-item.partial::before { background: var(--amber); box-shadow: 0 0 0 1px var(--amber); }
-    .timeline-item.blocked::before { background: var(--red); box-shadow: 0 0 0 1px var(--red); }
-    .timeline-date { color: var(--dim); }
-    .timeline-content { padding-bottom: .75rem; border-bottom: 1px solid var(--line-soft); }
-    .timeline-content p { margin: .25rem 0 0; color: var(--muted); font-size: .78rem; }
-    .timeline-content strong { color: var(--text); }
-
-    .controls { display: flex; flex-wrap: wrap; gap: .4rem; }
-    .filter-button { cursor: pointer; padding: .5rem .68rem; border: 1px solid var(--line); border-radius: 7px; color: var(--muted); background: transparent; font: inherit; font-size: .68rem; }
-    .filter-button:hover, .filter-button[aria-pressed="true"] { border-color: var(--mint); color: var(--bg); background: var(--mint); }
-    .filter-count { margin: .7rem 0 0; color: var(--dim); font-size: .72rem; }
-
-    .table-wrap { overflow-x: auto; border: 1px solid var(--line-soft); border-radius: 10px; }
-    table { width: 100%; min-width: 760px; border-collapse: collapse; }
-    th, td { padding: .78rem .8rem; text-align: left; vertical-align: top; border-bottom: 1px solid var(--line-soft); }
-    th { color: var(--dim); background: rgba(4, 10, 14, .28); }
-    td { color: var(--muted); font-size: .76rem; }
-    td:first-child { width: 26%; color: var(--text); font-weight: 700; }
-    td:nth-child(2) { width: 13%; }
-    td:nth-child(3) { width: 16%; color: var(--cyan); white-space: nowrap; }
-    td:last-child { width: 45%; }
-    tr:last-child td { border-bottom: 0; }
-    tr.is-hidden { display: none; }
-    .table-section-title { margin: 1.4rem 0 .6rem; color: var(--mint); font-size: .75rem; letter-spacing: .12em; text-transform: uppercase; }
-    .table-section-title:first-of-type { margin-top: 0; }
-
-    .callout { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: .75rem; align-items: start; padding: .85rem 1rem; border-left: 3px solid var(--amber); background: rgba(246, 199, 109, .07); }
-    .callout strong { color: var(--amber); }
-    .callout p { margin: 0; color: var(--muted); font-size: .79rem; }
-    .queue { display: grid; gap: .6rem; margin-top: 1rem; }
-    .queue-item { display: grid; grid-template-columns: 2.2rem minmax(0, 1fr); gap: .75rem; align-items: start; padding: .7rem .8rem; border: 1px solid var(--line-soft); border-radius: 9px; background: rgba(4, 10, 14, .2); }
-    .queue-number { display: grid; place-items: center; width: 1.8rem; height: 1.8rem; border: 1px solid var(--amber); border-radius: 50%; color: var(--amber); font-size: .7rem; }
-    .queue-item strong { color: var(--text); font-size: .8rem; }
-    .queue-item p { margin: .2rem 0 0; color: var(--muted); font-size: .73rem; }
-
-    .footer { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 1rem; margin-top: 1.4rem; padding: 1rem .2rem 0; border-top: 1px solid var(--line); color: var(--dim); font-size: .7rem; }
-    .footer-links { display: flex; flex-wrap: wrap; gap: .9rem; }
-
-    @media (max-width: 820px) {
-      .hero-grid, .panel-grid { grid-template-columns: 1fr; }
-      .signal-card { max-width: 440px; }
-      .metrics { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-    }
-
-    @media (max-width: 560px) {
-      .shell { width: min(100% - 1rem, 1240px); padding-top: 1rem; }
-      .hero { padding: 1.1rem; }
-      h1 { font-size: clamp(2.55rem, 16vw, 4.5rem); }
-      .metrics { gap: .5rem; }
-      .metric { padding: .75rem; }
-      .metric-value { font-size: 1.55rem; }
-      .timeline-item { grid-template-columns: 1fr; gap: .15rem; padding-left: 1.45rem; }
-      .evidence-item { grid-template-columns: 1fr; gap: .1rem; }
-    }
-
     @media print {
-      :root { color-scheme: light; }
-      body { color: #12191e; background: white; }
-      body::before, .controls, .section-nav { display: none; }
-      .shell { width: 100%; padding: 0; }
-      .hero, .panel, .metric { color: #12191e; background: white; box-shadow: none; border-color: #b4c0c3; }
-      .lede, .section-intro, td, .timeline-content p, .metric-note, .footer, .evidence-item dt, .evidence-item dd small { color: #40545a; }
-      a { color: #075f70; }
+      :root,:root[data-theme="dark"] { --bg:#fff; --panel:#fff; --surface:#f1f3f1; --text:#142a29; --muted:#354d4b; --line:#a9b8b4; --accent:#124d40; --accent-soft:#fff; --red:#8c2622; --red-soft:#fff; --amber:#604400; color-scheme:light; }
+      body,.app,main { display:block; height:auto; overflow:visible; padding:0; }
+      .skip,.tabbar,.header-actions,.filters,.count,.empty,.noscript { display:none !important; }
+      .tabpanel,.tabpanel[hidden] { display:block !important; height:auto; overflow:visible; padding:0; margin:1.5rem 0; }
+      .work-row[hidden],.table-section[hidden] { display:table-row !important; }
+      .table-section[hidden] { display:block !important; }
+      .card { box-shadow:none; break-inside:avoid; }
+      .overview-grid,.overview-main,.timeline,.evidence-grid { display:block; }
+      .overview-grid>.card,.event,.evidence-grid>.card { margin:.6rem 0; }
+      .phase-board { grid-template-columns:repeat(6,minmax(0,1fr)); }
+      table { display:table; table-layout:auto; border:1px solid var(--line); }
+      thead { display:table-header-group; position:static; clip-path:none; width:auto; height:auto; overflow:visible; }
+      tbody { display:table-row-group; }
+      tbody tr,.work-row { display:table-row; break-inside:avoid; }
+      td,th { display:table-cell; padding:.45rem; font-size:9pt; }
+      td::before { display:none; }
+      h2 { font-size:22pt; }
+      h3 { break-after:avoid; }
+      footer { display:block; margin-top:1rem; }
+      a { color:var(--accent); }
+      @page { margin:12mm; }
     }
-
-    @media (prefers-reduced-motion: reduce) {
-      html { scroll-behavior: auto; }
-      *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
-    }
+    @media(prefers-reduced-motion:reduce) { *,*::before,*::after { scroll-behavior:auto !important; animation:none !important; transition:none !important; } }
   </style>
 </head>
 <body>
-  <a class="skip-link" href="#work-items">Skip to work items</a>
-  <main class="shell">
-    <header class="hero" id="top">
-      <div class="eyebrow">PROJECT STATUS / EVIDENCE LEDGER / 2026.09.06</div>
-      <div class="hero-grid">
-        <div>
-          <h1>Zelda2MarioCoop</h1>
-          <p class="lede">A source-only co-op reconstruction for Adventure of Mario v2.0.1, carrying Zelda II player behavior into a Mario/MMC5 runtime without publishing commercial ROM data.</p>
-          <div class="hero-meta" aria-label="Project metadata">
-            <span class="meta-pill">Target <strong>Adventure of Mario v2.0.1</strong></span>
-            <span class="meta-pill">Review branch <strong>next-phases-20260906</strong></span>
-            <span class="meta-pill">Main baseline <strong>e263b66</strong></span>
-          </div>
-          <nav class="section-nav" aria-label="Document sections">
-            <a href="#evidence">Evidence</a>
-            <a href="#timeline">Timeline</a>
-            <a href="#work-items">Work matrix</a>
-            <a href="#next">Next gate</a>
-          </nav>
-        </div>
-        <aside class="signal-card" aria-label="Release status">
-          <div class="signal-top"><span class="signal-word">RED</span><span class="pulse" aria-hidden="true"></span></div>
-          <p>Not release-ready. The source and bounded prototypes are moving, but exact owner inputs and fresh runtime proof remain unavailable.</p>
-        </aside>
-      </div>
-    </header>
-
-    <section class="metrics" aria-label="Status metrics">
-      <article class="metric"><span class="metric-label">Automated gate</span><strong class="metric-value">111</strong><p class="metric-note">tests passed in current report</p></article>
-      <article class="metric"><span class="metric-label">Owner inputs</span><strong class="metric-value">4 / 4</strong><p class="metric-note">required files missing for verify</p></article>
-      <article class="metric"><span class="metric-label">Shared candidates</span><strong class="metric-value">36</strong><p class="metric-note">direct input ownership candidates</p></article>
-      <article class="metric"><span class="metric-label">Roadmap phases</span><strong class="metric-value">10</strong><p class="metric-note">Phase 0 through Phase 10</p></article>
-    </section>
-
-    <section class="panel" id="evidence">
-      <div class="section-heading">
-        <div><div class="section-kicker">01 / EVIDENCE</div><h2>What this status is anchored to</h2><p class="section-intro">This page separates repository progress, automated checks, runtime evidence, and owner-input availability. A historical green milestone does not become current runtime proof by repetition.</p></div>
-        <div class="legend" aria-label="Status legend">
-          <span class="status-chip status-complete">Complete</span>
-          <span class="status-chip status-in-progress">In progress</span>
-          <span class="status-chip status-blocked">Blocked</span>
-          <span class="status-chip status-not-started">Not started</span>
-        </div>
-      </div>
-      <dl class="evidence-list">
-        <div class="evidence-item"><dt>Source target</dt><dd><code>DaveHomeAssist/Zelda2MarioCoop</code><small>Continuation branch is isolated because the canonical checkout contains unrelated dirty user changes.</small></dd></div>
-        <div class="evidence-item"><dt>Code baseline</dt><dd><code>origin/main @ e263b66</code><small>PR #14 is merged. This review branch carries the next-phase continuation worktree.</small></dd></div>
-        <div class="evidence-item"><dt>Automated proof</dt><dd><code>make test</code> → 111 passed<small>Repository test lane is green; this does not prove emulator or human playthrough acceptance.</small></dd></div>
-        <div class="evidence-item"><dt>Owner gate</dt><dd><code>make verify</code> → blocked<small>The four required owner inputs are absent from the expected external ROM directory; the 4TB T9 SSD is not mounted.</small></dd></div>
-        <div class="evidence-item"><dt>Open review</dt><dd>Internal review remains open<small>Docs-only combat map correction remains open against a community clean-ROM reference.</small></dd></div>
-      </dl>
-    </section>
-
-    <section class="panel" id="timeline">
-      <div class="section-kicker">02 / CHRONOLOGY</div>
-      <h2>Timeline of delivered and partial work</h2>
-      <p class="section-intro">Dates below are actual completion or review dates. “Complete” is scoped to the named milestone; it is not a claim that the full game is complete.</p>
-      <div class="timeline">
-        <article class="timeline-item"><div class="timeline-date">2026.09.02</div><div class="timeline-content"><h3>Phase 0 foundation</h3><p><strong>Complete historically.</strong> Target, source-only boundary, and input validation contract established. A current rerun is blocked by missing owner inputs.</p></div></article>
-        <article class="timeline-item partial"><div class="timeline-date">2026.09.02</div><div class="timeline-content"><h3>Z22 reconstruction ledger</h3><p><strong>In progress.</strong> 11 live hooks and 16 padding clusters are recorded; full-game behavior and shared-tail classification remain open.</p></div></article>
-        <article class="timeline-item"><div class="timeline-date">2026.09.02–03</div><div class="timeline-content"><h3>Overlay, bootstrap, and controller-two capture</h3><p><strong>Complete for prototype scope.</strong> The bounded source and capture paths exist; they are not yet a release-grade full-game path.</p></div></article>
-        <article class="timeline-item"><div class="timeline-date">2026.09.02–03</div><div class="timeline-content"><h3>Context adapter spike</h3><p><strong>Complete for bounded route.</strong> Context-positioned rendering and the adapter boundary are documented with the remaining actor-isolation seam called out.</p></div></article>
-        <article class="timeline-item"><div class="timeline-date">2026.09.04</div><div class="timeline-content"><h3>PRs #1–6 / bounded player workset</h3><p><strong>Complete for declared scopes.</strong> Player 2 actor-local work, Luigi rendering, shared effects, and the normal actor stage were merged with source and test evidence.</p></div></article>
-        <article class="timeline-item partial"><div class="timeline-date">2026.09.04</div><div class="timeline-content"><h3>PR #7 / camera and rejoin</h3><p><strong>Partial.</strong> Conservative safety policy and bounded camera/rejoin behavior are merged; fresh current-head runtime proof is still unavailable.</p></div></article>
-        <article class="timeline-item partial"><div class="timeline-date">2026.09.04</div><div class="timeline-content"><h3>PR #8 / animation and overrun boundary</h3><p><strong>Partial.</strong> Animation-state seeding and independent render proof exist; final independent animation behavior is unfinished.</p></div></article>
-        <article class="timeline-item partial"><div class="timeline-date">2026.09.05</div><div class="timeline-content"><h3>P3.1 ledger and camera trials</h3><p><strong>Partial.</strong> Static ledgers and bounded trials advanced, but the current-head fresh runtime gate is not established.</p></div></article>
-        <article class="timeline-item partial"><div class="timeline-date">2026.09.05</div><div class="timeline-content"><h3>PR #9 / combat and reward maps</h3><p><strong>Partial.</strong> Static address maps landed; emulator-backed behavior and final gameplay integration remain open.</p></div></article>
-        <article class="timeline-item partial"><div class="timeline-date">2026.09.06 UTC</div><div class="timeline-content"><h3>PRs #11–14 / safety, rejoin, and shared-input census</h3><p><strong>Complete for declared scopes.</strong> The latest bounded source changes are merged. The census still has 36 direct candidates, 13 write/RMW candidates, and 15 CDL-touched candidates to classify.</p></div></article>
-        <article class="timeline-item"><div class="timeline-date">2026.09.06</div><div class="timeline-content"><h3>Current automated test gate</h3><p><strong>Complete.</strong> <code>make test</code> passed 111 tests. The owner-input gate and runtime lanes remain separate.</p></div></article>
-        <article class="timeline-item blocked"><div class="timeline-date">2026.09.06</div><div class="timeline-content"><h3>Current owner-input verification</h3><p><strong>Blocked.</strong> The four required clean/target ROM and patch files are not available at the expected external path, so fresh baseline and runtime proof cannot proceed.</p></div></article>
+<a class="skip" href="#main">Skip to dashboard</a>
+<div class="app">
+  <header class="masthead">
+    <div class="brand"><span class="mark" aria-hidden="true">Z</span><div><div class="eyebrow">MixMash / Development ledger</div><h1>Zelda2<wbr>MarioCoop</h1></div></div>
+    <div class="header-actions"><a class="back" href="https://mixmash.games/">Studio home</a><button id="theme-toggle" type="button" aria-pressed="false">Dark mode</button><button id="print" type="button" aria-label="Print complete project report">Print</button></div>
+  </header>
+  <nav class="tabbar" role="tablist" aria-label="Project sections">
+    <button id="tab-overview" role="tab" aria-selected="true" aria-controls="overview" tabindex="0" type="button">Overview</button>
+    <button id="tab-timeline" role="tab" aria-selected="false" aria-controls="timeline" tabindex="-1" type="button">Timeline</button>
+    <button id="tab-work" role="tab" aria-selected="false" aria-controls="work" tabindex="-1" type="button">Work Items</button>
+    <button id="tab-evidence" role="tab" aria-selected="false" aria-controls="evidence" tabindex="-1" type="button">Evidence</button>
+  </nav>
+  <main id="main" tabindex="-1">
+    <noscript><section class="card noscript"><h2>JavaScript is needed to view the ledger</h2><p>The game is not release-ready. This document renders its embedded status data locally; it does not fetch private records. Enable JavaScript to view all phases, milestones and evidence.</p></section></noscript>
+    <div id="data-error" class="card" role="alert" hidden>The status data could not be loaded. Do not infer project completion from this page.</div>
+    <section id="overview" class="tabpanel" role="tabpanel" aria-labelledby="tab-overview" tabindex="0">
+      <div class="overview-grid">
+        <article class="card overview-main"><div><div class="kicker">Status snapshot / <span class="snapshot-date"></span></div><h2 id="summary"></h2><p class="intro" id="description"></p><div class="metrics" id="metrics"></div></div><aside class="signal"><span class="chip" data-status="Blocked">Game: blocked</span><p><strong>Not playable or release-ready.</strong> A successful input check, static analysis, baseline boot, or dashboard deployment does not close the game’s runtime gates.</p><p>Shared health and progression. P1 camera leadership. No commercial ROM distribution.</p></aside></article>
+        <article class="card"><div class="kicker">Verification, separated</div><h3>What passes. What doesn’t.</h3><div class="gate-list" id="gates"></div></article>
+        <article class="card"><div class="kicker">Next execution boundary</div><h3>Restore runtime verification</h3><ol class="next-list"><li><strong>Repair harness compilation.</strong><span>Resolve Lua local-variable pressure without weakening assertions; expose load failures before long runs.</span></li><li><strong>Reconcile artifact identity.</strong><span>Bind runtime expectations to the reviewed, reproducible source build. Keep the failed evidence.</span></li><li><strong>Resume the six M2 gates.</strong><span>Full-game ownership, actor/shared separation, timing, NMI/mapper proof, ABI, then fresh movement proof and soak.</span></li></ol><div class="notice">No committed completion date. Remaining work is ordered by dependencies, not invented calendar deadlines.</div></article>
+        <article class="card wide-card"><div class="section-head"><div><div class="kicker">Full scope, no skipped phases</div><h3>Roadmap at a glance</h3></div><span class="intro">Implementation status; verification is tracked separately.</span></div><div id="phase-board" class="phase-board"></div></article>
       </div>
     </section>
-
-    <section class="panel" id="work-items">
-      <div class="section-heading">
-        <div><div class="section-kicker">03 / WORK MATRIX</div><h2>Completed work and remaining work</h2><p class="section-intro">Use the filters to isolate delivered evidence, open partial work, or the remaining dependency-ordered queue. Remaining work has no committed calendar dates yet.</p></div>
-        <div class="controls" role="group" aria-label="Filter work items">
-          <button class="filter-button" type="button" data-filter="all" aria-pressed="true">All</button>
-          <button class="filter-button" type="button" data-filter="complete" aria-pressed="false">Complete</button>
-          <button class="filter-button" type="button" data-filter="in-progress" aria-pressed="false">In progress</button>
-          <button class="filter-button" type="button" data-filter="blocked" aria-pressed="false">Blocked</button>
-          <button class="filter-button" type="button" data-filter="not-started" aria-pressed="false">Not started</button>
-        </div>
-      </div>
-      <p class="filter-count" id="filter-count" aria-live="polite">Showing all work items.</p>
-
-      <h3 class="table-section-title">Delivered / partial history</h3>
-      <div class="table-wrap">
-        <table>
-          <caption class="sr-only">Delivered and partial project work, sorted by actual date</caption>
-          <thead><tr><th scope="col">Task or milestone</th><th scope="col">Status</th><th scope="col">Actual date</th><th scope="col">Notes, blockers, or dependencies</th></tr></thead>
-          <tbody>
-            <tr class="work-row" data-status="complete"><td>Phase 0 foundation and source-only boundary</td><td><span class="status-chip status-complete">Complete</span></td><td>2026-09-02</td><td>Historical completion. Current verification is blocked until the four owner-supplied inputs are restored.</td></tr>
-            <tr class="work-row" data-status="in-progress"><td>Z22 reconstruction ledger</td><td><span class="status-chip status-in-progress">In progress</span></td><td>2026-09-02 →</td><td>11 live hooks and 16 padding clusters recorded. Full-game hook closure and shared-tail classification are dependencies.</td></tr>
-            <tr class="work-row" data-status="complete"><td>Overlay, bootstrap, controller-two capture</td><td><span class="status-chip status-complete">Complete</span></td><td>2026-09-02–03</td><td>Complete for the bounded prototype route. Runtime release proof is still a separate gate.</td></tr>
-            <tr class="work-row" data-status="complete"><td>Context adapter bounded route</td><td><span class="status-chip status-complete">Complete</span></td><td>2026-09-02–03</td><td>Adapter, context-positioned rendering, and documented seam are in place for the declared scope.</td></tr>
-            <tr class="work-row" data-status="complete"><td>PRs #1–6 / bounded player workset</td><td><span class="status-chip status-complete">Complete</span></td><td>2026-09-04</td><td>Merged bounded milestones covering actor-local Player 2 behavior, Luigi rendering, shared effects, and the normal actor stage.</td></tr>
-            <tr class="work-row" data-status="in-progress"><td>PR #7 / camera and rejoin</td><td><span class="status-chip status-in-progress">In progress</span></td><td>2026-09-04</td><td>Safety policy merged. Fresh current-head runtime proof and soak evidence remain dependent on owner inputs and CDL.</td></tr>
-            <tr class="work-row" data-status="in-progress"><td>PR #8 / animation and overrun boundary</td><td><span class="status-chip status-in-progress">In progress</span></td><td>2026-09-04</td><td>Seeding and independent render proof landed. Final independent animation behavior is not complete.</td></tr>
-            <tr class="work-row" data-status="in-progress"><td>P3.1 ledger and camera trials</td><td><span class="status-chip status-in-progress">In progress</span></td><td>2026-09-05</td><td>Static/trial evidence exists, but not a fresh current-head runtime gate.</td></tr>
-            <tr class="work-row" data-status="in-progress"><td>PR #9 / combat and reward maps</td><td><span class="status-chip status-in-progress">In progress</span></td><td>2026-09-05</td><td>Static maps only. Emulator-backed combat/reward behavior is not yet verified.</td></tr>
-            <tr class="work-row" data-status="complete"><td>PRs #11–14 / bounded safety and census updates</td><td><span class="status-chip status-complete">Complete</span></td><td>2026-09-06</td><td>Merged for declared scopes. The resulting shared-input census is an unresolved input to M2 ownership work.</td></tr>
-            <tr class="work-row" data-status="complete"><td>Automated test gate</td><td><span class="status-chip status-complete">Complete</span></td><td>2026-09-06</td><td><code>make test</code> passed 111 tests. It does not replace exact ROM, emulator, hardware, or human acceptance.</td></tr>
-            <tr class="work-row" data-status="blocked"><td>Owner-input verification</td><td><span class="status-chip status-blocked">Blocked</span></td><td>2026-09-06</td><td>Required clean Zelda II ROM, multiplayer ROM, v2.0.0 ROM, and v2.0.1 IPS are missing from the expected external input directory.</td></tr>
-            <tr class="work-row" data-status="open"><td>PR #10 / combat map correction</td><td><span class="status-chip status-open">Open review</span></td><td>2026-09-06</td><td>Docs-only correction remains open against a community clean-ROM reference; merge status is not a substitute for gameplay proof.</td></tr>
-          </tbody>
-        </table>
-      </div>
-
-      <h3 class="table-section-title">Remaining work queue</h3>
-      <div class="table-wrap">
-        <table>
-          <caption class="sr-only">Remaining project work in dependency order</caption>
-          <thead><tr><th scope="col">Task or milestone</th><th scope="col">Status</th><th scope="col">Planned date</th><th scope="col">Notes, blockers, or dependencies</th></tr></thead>
-          <tbody>
-            <tr class="work-row" data-status="in-progress"><td>M2.1 / full-game input ownership</td><td><span class="status-chip status-in-progress">In progress</span></td><td>Next gate</td><td>Resolve <code>$015F</code>, <code>$017B</code>, and <code>$0754</code> across the full image. Depends on exact owner ROMs and CDL-backed classification.</td></tr>
-            <tr class="work-row" data-status="in-progress"><td>M2.2 / shared-tail actor-state isolation</td><td><span class="status-chip status-in-progress">In progress</span></td><td>After M2.1</td><td>Isolate <code>$00B5/$00E9/$050C</code> and split <code>$E079</code> tail evaluation. Current workset has 501 control-flow states and 26 shared write sites.</td></tr>
-            <tr class="work-row" data-status="not-started"><td>M2.3 / worst-room timing and NMI proof</td><td><span class="status-chip status-not-started">Not started</span></td><td>After M2.2</td><td>Requires stable full-game ownership and exact runtime inputs before meaningful cycle and mapper claims.</td></tr>
-            <tr class="work-row" data-status="not-started"><td>M2.4 / final bank map and runtime ABI</td><td><span class="status-chip status-not-started">Not started</span></td><td>After M2.3</td><td>Depends on the final bank-aware map, hook ledger closure, and interrupt assumptions.</td></tr>
-            <tr class="work-row" data-status="blocked"><td>M2.5 / fresh P4 runtime proof, S01–S06, and soak</td><td><span class="status-chip status-blocked">Blocked</span></td><td>After M2.4</td><td>Blocked by missing owner inputs and unavailable CDL. Requires current-head Mesen proof plus the 30-minute soak.</td></tr>
-            <tr class="work-row" data-status="not-started"><td>Phase 5 / playable independent movement slice</td><td><span class="status-chip status-not-started">Not started</span></td><td>After M2.5</td><td>Depends on actor isolation, camera/rejoin safety, input ownership, and a reproducible runtime target.</td></tr>
-            <tr class="work-row" data-status="not-started"><td>Phase 6 / combat and progression</td><td><span class="status-chip status-not-started">Not started</span></td><td>After Phase 5</td><td>Combat map is partially documented; gameplay behavior, rewards, progression, and regression proof remain.</td></tr>
-            <tr class="work-row" data-status="not-started"><td>Phase 7 / transitions, modes, bosses, save-load</td><td><span class="status-chip status-not-started">Not started</span></td><td>After Phase 6</td><td>Full mode/transition coverage and shared-state safety are not yet implemented or verified.</td></tr>
-            <tr class="work-row" data-status="not-started"><td>Phase 8 / final rendering, timing, and hardware</td><td><span class="status-chip status-not-started">Not started</span></td><td>After Phase 7</td><td>Requires final runtime contract, worst-room timing, mapper/NMI evidence, and hardware-specific checks.</td></tr>
-            <tr class="work-row" data-status="blocked"><td>Phase 9 / release verification and playthrough</td><td><span class="status-chip status-blocked">Blocked</span></td><td>After Phase 8</td><td>Cannot start credibly until the input gate, runtime proof, and the full playable slice are green.</td></tr>
-            <tr class="work-row" data-status="not-started"><td>Phase 10 / BPS package and release handoff</td><td><span class="status-chip status-not-started">Not started</span></td><td>After Phase 9</td><td>Final deliverable is a BPS patch for an exact supported base. No public ROM release is in scope.</td></tr>
-          </tbody>
-        </table>
-      </div>
-    </section>
-
-    <section class="panel" id="next">
-      <div class="section-kicker">04 / NEXT GATE</div>
-      <h2>Recover the evidence path, then resume M2</h2>
-      <div class="panel-grid">
-        <div>
-          <div class="callout"><strong>RED</strong><p>Do not promote the project to Yellow or Green until the required owner inputs are present, size/SHA validated, and the current target is rerun.</p></div>
-          <div class="queue" aria-label="Next actions">
-            <div class="queue-item"><span class="queue-number">1</span><div><strong>Restore the four required owner inputs</strong><p>Clean Zelda II ROM, multiplayer ROM, v2.0.0 foundation, and v2.0.1 IPS at the configured external path.</p></div></div>
-            <div class="queue-item"><span class="queue-number">2</span><div><strong>Rerun the exact input and baseline gates</strong><p>Record size, SHA-256, branch/head, and generated reports without committing ROMs, traces, CDL, or saves.</p></div></div>
-            <div class="queue-item"><span class="queue-number">3</span><div><strong>Resolve M2 ownership and shared-tail seams</strong><p>Use the live candidate census and CDL-backed classification before claiming safe full-game Player 2 execution.</p></div></div>
-            <div class="queue-item"><span class="queue-number">4</span><div><strong>Refresh this artifact and its Notion status run</strong><p>Update the embedded evidence, date, tables, and blocker language in the same change, then fetch back the Notion write.</p></div></div>
-          </div>
-        </div>
-        <div>
-          <h3>Update contract</h3>
-          <p class="section-intro">The project rules now bind this visual document to material project change. Future updates must preserve the same separation between source, test, runtime, owner input, and human acceptance.</p>
-          <div class="callout" style="margin-top:1rem;border-left-color:var(--mint);background:rgba(131,227,199,.06)"><strong style="color:var(--mint)">RULE</strong><p>When a milestone, blocker, verification result, or release-state claim changes, refresh this page’s evidence block, timeline, and work matrix in the same repository change. Mark stale or untestable lanes explicitly; never infer Green from a merged PR or a passing static test alone.</p></div>
-        </div>
-      </div>
-    </section>
-
-    <footer class="footer">
-      <span>Last reviewed: 2026-09-06 / current release state: RED</span>
-      <span class="footer-links"><a href="https://mixmash.games/">MixMash home</a><a href="https://mixmash.games/zelda2mario/">Public status route</a><span>Internal records omitted from this public projection</span></span>
-    </footer>
+    <section id="timeline" class="tabpanel" role="tabpanel" aria-labelledby="tab-timeline" tabindex="0" hidden><div class="section-head"><div><div class="kicker">Delivery history</div><h2>What happened, and when</h2><p class="intro">Chronological milestone dates in UTC. Completion applies only to the named scope; failed attempts remain visible.</p></div></div><ol id="events" class="timeline"></ol></section>
+    <section id="work" class="tabpanel" role="tabpanel" aria-labelledby="tab-work" tabindex="0" hidden><div class="section-head"><div><div class="kicker">All work items</div><h2>Delivered work. Remaining gates.</h2><p class="intro">Historical milestones are date-sorted. Undated phase and M2 work follows the plan’s dependency order. A blank schedule is shown as TBD.</p></div></div><div class="filters"><label for="status-filter">Implementation status<select id="status-filter"><option>All</option><option>Complete</option><option>In Progress</option><option>Blocked</option><option>Not Started</option></select></label><label for="work-search">Search work items<input id="work-search" type="search" placeholder="Task, dependency or evidence"></label></div><p id="filter-count" class="count" role="status" aria-live="polite"></p><p id="empty" class="notice empty" hidden>No work items match. Choose All and clear the search to restore the complete ledger.</p><div id="work-tables"></div></section>
+    <section id="evidence" class="tabpanel" role="tabpanel" aria-labelledby="tab-evidence" tabindex="0" hidden><div class="section-head"><div><div class="kicker">Provenance and limits</div><h2>Evidence before completion</h2><p class="intro">Verified <span class="snapshot-date"></span>. This is a dated snapshot, not a live monitor. Private source records and owner-held ROM data are not published.</p></div></div><dl class="evidence-grid" id="evidence-list"></dl><div class="notice"><strong>Still unverified:</strong> current-source dual-player gameplay, worst-room timing, instruction-boundary NMI/mapper recovery, independent controller/emulator behavior, full co-op playthrough, movement soak and human release acceptance.</div><p><a href="https://mixmash.games/">Return to MixMash Studio</a></p></section>
   </main>
-
-  <script>
-    (() => {
-      const buttons = [...document.querySelectorAll("[data-filter]")];
-      const rows = [...document.querySelectorAll(".work-row")];
-      const count = document.querySelector("#filter-count");
-      const labels = { all: "all work items", complete: "complete items", "in-progress": "in-progress items", blocked: "blocked items", "not-started": "not-started items" };
-
-      function applyFilter(filter) {
-        let visible = 0;
-        rows.forEach((row) => {
-          const show = filter === "all" || row.dataset.status === filter;
-          row.classList.toggle("is-hidden", !show);
-          if (show) visible += 1;
+  <footer><span>Source-only project / public status projection</span><span>Checked <span class="snapshot-date"></span> · baseline <span id="baseline"></span></span></footer>
+</div>
+<script id="status-data" type="application/json">
+{
+  "schemaVersion": 1,
+  "meta": {
+    "project": "Zelda2MarioCoop",
+    "target": "Adventure of Mario v2.0.1",
+    "sourceCommit": "cb99ab3ea0074d0e1eaca28375d8d11c5626c46c",
+    "checkedAt": "2026-09-08T07:28:11Z",
+    "status": "Blocked",
+    "summary": "Inputs recovered. Runtime proof blocked.",
+    "description": "Mario and Luigi co-op, reconstructed on the Mario/MMC5 foundation. A source-only project; no commercial ROM data or playable release is published here."
+  },
+  "gates": [
+    {
+      "id": "inputs",
+      "name": "Owner inputs",
+      "state": "Passed",
+      "value": "4 / 4",
+      "detail": "All required input sizes and hashes verified on September 8. The previous missing-drive blocker is cleared."
+    },
+    {
+      "id": "tests",
+      "name": "Source tests",
+      "state": "Passed",
+      "value": 111,
+      "detail": "make check passed on the checked source: 111 unit tests plus exact owner-input verification."
+    },
+    {
+      "id": "cdl",
+      "name": "Pinned CDL",
+      "state": "Passed",
+      "value": "Validated",
+      "detail": "Historical CDL recovered read-only. SHA-256, CDLv2 format, size, and target PRG CRC match. This is not new full-game coverage."
+    },
+    {
+      "id": "boot",
+      "name": "Baseline boot",
+      "state": "Passed",
+      "value": "600 frames",
+      "detail": "Fresh Mesen baseline smoke passed with a valid screenshot. Baseline boot is not dual-player gameplay acceptance."
+    },
+    {
+      "id": "runtime",
+      "name": "Dual-player runtime",
+      "state": "Blocked",
+      "value": "Compile failure",
+      "detail": "The camera/rejoin command exited 255 without a report. Mesen confirms dual_update.lua:3996 exceeds Lua’s 200-local-variable limit."
+    },
+    {
+      "id": "pins",
+      "name": "Runtime identity",
+      "state": "Blocked",
+      "value": "Stale expectations",
+      "detail": "The source-built context ROM differs from the declared runtime hashes. No expected hash or assertion was changed to turn this into a pass."
+    }
+  ],
+  "evidence": [
+    {
+      "name": "Gameplay source baseline",
+      "value": "cb99ab3ea0074d0e1eaca28375d8d11c5626c46c",
+      "note": "Baseline checked before this documentation-only publication. PR #10 merged September 7 at 07:20:41 UTC."
+    },
+    {
+      "name": "Baseline v2.0.1 SHA-256",
+      "value": "59a7a45c005cdc5edd9afbee50984f4bc724e942c0e17c0dea487459f2b9bfe8",
+      "note": "Freshly rebuilt from verified owner inputs; exact target identity."
+    },
+    {
+      "name": "Historical CDL SHA-256",
+      "value": "5c4d32cfe695a0f0f71e1d41f6e51394d0a6a64d185abec4d3a5404ea489300c",
+      "note": "393225 bytes; CDLv2; target PRG CRC32 e97677d9. Coverage remains bounded."
+    },
+    {
+      "name": "Fresh context ROM SHA-256",
+      "value": "687693247f3be0bdc9c475ca9b28033ac8ad63b903c93aeb70d9cc653af7a371",
+      "note": "Build succeeds, but runtime expectations still declare d6db314b5ffd93c1ef1a7c647a8881aba1ebc685e71e266328c3a1ca96412d95. Identity reconciliation remains open."
+    },
+    {
+      "name": "Source-built adapter SHA-256",
+      "value": "5c1412e632a139785ae4e72f36fee8754263666b1e6a7beccf84492fd13fd9be",
+      "note": "Matches the existing installer guard. The rejoin source increment updated this pin without updating both context-ROM pins."
+    },
+    {
+      "name": "Pinned Mesen binary SHA-256",
+      "value": "bddfea2fb864f4613314a6f2f4b93f3f0de2ca1d0a044e27e83555b4048e1b09",
+      "note": "Installed Mesen 2.1.1 matches the configured binary. Baseline smoke passed; dual harness compilation failed."
+    },
+    {
+      "name": "Ownership evidence",
+      "value": "36 candidates · 13 write/RMW · 15 CDL-touched",
+      "note": "Fresh census, ownership_proven=false. Bounded actor and shared-tail analyses pass their declared static scope, not full semantic isolation."
+    },
+    {
+      "name": "Historical controlled-route timing",
+      "value": "4,440 / 4,467 cycles",
+      "note": "27-cycle margin on the recorded controlled route only. Not current-head or worst-room proof. Do not relax the ceiling."
+    },
+    {
+      "name": "Interpretation boundary",
+      "value": "public_reference ≠ runtime verified",
+      "note": "PR #10 corrected clean-ROM address interpretations. Community references remain research leads, not target behavior acceptance."
+    }
+  ],
+  "phases": [
+    {
+      "id": "phase-0",
+      "name": "Phase 0 — Reproducible authority and baselines",
+      "status": "Complete",
+      "verification": "Foundation established historically; inputs, baseline build and boot rechecked September 8",
+      "dependency": "Exact owner inputs",
+      "notes": "Source-only tooling and reproducible baseline established. Fresh source tests pass; full-game runtime is a separate gate.",
+      "completedAt": "2026-09-02",
+      "plannedAt": null
+    },
+    {
+      "id": "phase-1",
+      "name": "Phase 1 — Complete Z22 reconstruction",
+      "status": "In Progress",
+      "verification": "Partial reconstruction evidence",
+      "dependency": "Verified baselines",
+      "notes": "11 live hooks and 16 padding clusters recorded. Reachable behavior and actor-state ownership still need complete classification.",
+      "completedAt": null,
+      "plannedAt": null
+    },
+    {
+      "id": "phase-2",
+      "name": "Phase 2 — Complete Adventure of Mario mapping",
+      "status": "In Progress",
+      "verification": "Bounded static maps; full-game coverage incomplete",
+      "dependency": "Verified target and scenario coverage",
+      "notes": "Finish bank, RAM, mapper, interrupt and player-workset maps across regions, bosses, menus and save/load.",
+      "completedAt": null,
+      "plannedAt": null
+    },
+    {
+      "id": "phase-3",
+      "name": "Phase 3 — Freeze the co-op runtime contract",
+      "status": "In Progress",
+      "verification": "Provisional design; final ABI not frozen",
+      "dependency": "Phases 1–2 ownership and bank maps",
+      "notes": "Freeze shared/per-actor ownership, join/disconnect/transition semantics and stack, RAM, OAM and cycle budgets.",
+      "completedAt": null,
+      "plannedAt": null
+    },
+    {
+      "id": "phase-4",
+      "name": "Phase 4 — Integration foundation",
+      "status": "In Progress",
+      "verification": "Green prototype; Yellow release gate",
+      "dependency": "Final contract and instruction-boundary proof",
+      "notes": "Overlay, bootstrap, controller-two capture and bounded actor stage exist. Final mapper/NMI proof, render instrumentation and independent controller testing remain.",
+      "completedAt": null,
+      "plannedAt": null
+    },
+    {
+      "id": "phase-5",
+      "name": "Phase 5 — Independent movement vertical slice",
+      "status": "In Progress",
+      "verification": "Yellow bounded spike; Grey playable slice",
+      "dependency": "M2.1–M2.6",
+      "notes": "Independent animation, shared-tail split, disconnect behavior, safe rejoin proof, traversal and the 30-minute movement soak remain.",
+      "completedAt": null,
+      "plannedAt": null
+    },
+    {
+      "id": "phase-6",
+      "name": "Phase 6 — Combat and shared progression",
+      "status": "Not Started",
+      "verification": "Static research only; gameplay unverified",
+      "dependency": "Accepted movement slice",
+      "notes": "Implement actor-aware damage, attacks, projectiles, targeting and exactly-once shared rewards. Health and progression remain shared.",
+      "completedAt": null,
+      "plannedAt": null
+    },
+    {
+      "id": "phase-7",
+      "name": "Phase 7 — Transitions, modes, and bosses",
+      "status": "Not Started",
+      "verification": "No full transition acceptance",
+      "dependency": "Phases 5–6 and transition coordinator",
+      "notes": "Cover doors, towns, palaces, pits, menus, spells, death, continue, save/load and every boss in one- and two-player modes.",
+      "completedAt": null,
+      "plannedAt": null
+    },
+    {
+      "id": "phase-8",
+      "name": "Phase 8 — Rendering, timing, and hardware limits",
+      "status": "Not Started",
+      "verification": "Historical bounded timing only",
+      "dependency": "Representative completed gameplay",
+      "notes": "Finalize OAM/flicker, profile worst rooms and bosses, verify audio/IRQ/scrolling and player identity across visual modes.",
+      "completedAt": null,
+      "plannedAt": null
+    },
+    {
+      "id": "phase-9",
+      "name": "Phase 9 — Release verification",
+      "status": "Blocked",
+      "verification": "Full-game acceptance unavailable",
+      "dependency": "Phases 1–8 and working runtime harness",
+      "notes": "Full playthrough, long soak, independent emulator/core, available hardware, clean-machine reproduction and artifact audit remain.",
+      "completedAt": null,
+      "plannedAt": null
+    },
+    {
+      "id": "phase-10",
+      "name": "Phase 10 — Package and release",
+      "status": "Not Started",
+      "verification": "No accepted release artifact",
+      "dependency": "Phase 9 plus explicit human release approval",
+      "notes": "Create and validate an additive BPS for the exact v2.0.1 base; document controls, compatibility, credits and licensing. Never publish ROM data.",
+      "completedAt": null,
+      "plannedAt": null
+    }
+  ],
+  "m2": [
+    {
+      "id": "m2-1",
+      "name": "M2.1 — Full-game shared-input ownership",
+      "status": "In Progress",
+      "verification": "Static candidates classified; ownership not proven",
+      "dependency": "Verified target and expanded scenario coverage",
+      "notes": "Resolve $015F/$017B/$0754 and every effect beyond the normal-control actor stage. The fresh census still has unresolved candidates.",
+      "completedAt": null,
+      "plannedAt": null
+    },
+    {
+      "id": "m2-2",
+      "name": "M2.2 — Actor state and shared-tail split",
+      "status": "Not Started",
+      "verification": "Research and seeding exist; runtime split unverified",
+      "dependency": "M2.1",
+      "notes": "Isolate $00B5/$00E9/$050C. Split actor-dependent $E079 evaluation from once-only sound, transition, object, enemy and mapper commits; instrument independent animation. Raw Luigi tail execution remains unsafe.",
+      "completedAt": null,
+      "plannedAt": null
+    },
+    {
+      "id": "m2-3",
+      "name": "M2.3 — Worst-room Player 2 timing",
+      "status": "Not Started",
+      "verification": "Historical 4,440-cycle controlled route only",
+      "dependency": "M2.2 and a working runtime harness",
+      "notes": "Expand and remeasure the incremental P2 path in representative worst-case rooms; preserve the 4,467-cycle ceiling.",
+      "completedAt": null,
+      "plannedAt": null
+    },
+    {
+      "id": "m2-4",
+      "name": "M2.4 — Instruction-boundary NMI/mapper proof",
+      "status": "In Progress",
+      "verification": "Static gateway contract exists; dynamic proof incomplete",
+      "dependency": "Working runtime harness and target scenarios",
+      "notes": "Verify the fixed-bank gateway and recovery contract at instruction boundaries; static mapping alone does not close this task.",
+      "completedAt": null,
+      "plannedAt": null
+    },
+    {
+      "id": "m2-5",
+      "name": "M2.5 — Bank-aware map and release actor ABI",
+      "status": "In Progress",
+      "verification": "Bounded maps exist; release ABI not frozen",
+      "dependency": "M2.1–M2.4 evidence",
+      "notes": "Finish the bank-aware write/call map and expand the machine-readable workset before freezing the release actor ABI.",
+      "completedAt": null,
+      "plannedAt": null
+    },
+    {
+      "id": "m2-6",
+      "name": "M2.6 — Fresh rejoin proof and movement soak",
+      "status": "Blocked",
+      "verification": "September 8 run produced no report; harness does not compile",
+      "dependency": "Harness compilation and hash reconciliation, then M2.1–M2.5",
+      "notes": "Prove safe-ground selection, invulnerability and outward-velocity clamp; run S01–S06 and a 30-minute movement soak before combat. Owner ROM and pinned CDL availability are no longer the blocker.",
+      "completedAt": null,
+      "plannedAt": null
+    }
+  ],
+  "milestones": [
+    {
+      "id": "foundation",
+      "name": "Foundation and input contract",
+      "status": "Complete",
+      "verification": "Historical scoped completion",
+      "dependency": "Scoped milestone; does not close the full game",
+      "notes": "Manifest, IPS build, deterministic tooling, exclusions and baseline audit established.",
+      "completedAt": "2026-09-02",
+      "observedAt": "2026-09-02",
+      "plannedAt": null
+    },
+    {
+      "id": "overlay",
+      "name": "Overlay, bootstrap and controller-two capture",
+      "status": "Complete",
+      "verification": "Historical prototype scope",
+      "dependency": "Scoped milestone; does not close the full game",
+      "notes": "Guarded overlay and controller input path; not a full-game release foundation.",
+      "completedAt": "2026-09-03",
+      "observedAt": "2026-09-03",
+      "plannedAt": null
+    },
+    {
+      "id": "adapter",
+      "name": "Context adapter spike",
+      "status": "Complete",
+      "verification": "Historical bounded-route evidence",
+      "dependency": "Scoped milestone; does not close the full game",
+      "notes": "Separate actor contexts and Mario restoration; no full shared-tail safety claim.",
+      "completedAt": "2026-09-03",
+      "observedAt": "2026-09-03",
+      "plannedAt": null
+    },
+    {
+      "id": "pr1-6",
+      "name": "PRs #1–6 — bounded actor, rendering and shared effects",
+      "status": "Complete",
+      "verification": "Merged; declared bounded scopes only",
+      "dependency": "Scoped milestone; does not close the full game",
+      "notes": "Player 2 $BB31–$BBA5 behavior, context-positioned Luigi rendering and shared sound/jump arbitration.",
+      "completedAt": "2026-09-04T14:34:51Z",
+      "observedAt": "2026-09-04T14:34:51Z",
+      "plannedAt": null
+    },
+    {
+      "id": "pr7",
+      "name": "PR #7 — camera/rejoin milestone",
+      "status": "Complete",
+      "verification": "Merged historical controlled-route proof",
+      "dependency": "Scoped milestone; does not close the full game",
+      "notes": "P1-led tether and rejoin evidence. Later safe-ground and velocity source changes still need fresh runtime proof.",
+      "completedAt": "2026-09-04T17:11:01Z",
+      "observedAt": "2026-09-04T17:11:01Z",
+      "plannedAt": null
+    },
+    {
+      "id": "pr8",
+      "name": "PR #8 — animation seeding and render proof",
+      "status": "Complete",
+      "verification": "Merged scoped source/probe work",
+      "dependency": "Scoped milestone; does not close the full game",
+      "notes": "Final independent animation remains open; a merged proof tool does not establish playable completion.",
+      "completedAt": "2026-09-05T03:30:12Z",
+      "observedAt": "2026-09-05T03:30:12Z",
+      "plannedAt": null
+    },
+    {
+      "id": "pr9",
+      "name": "PR #9 — combat and reward maps",
+      "status": "Complete",
+      "verification": "Merged static research",
+      "dependency": "Scoped milestone; does not close the full game",
+      "notes": "Damage, attack and reward address research; no combat gameplay acceptance.",
+      "completedAt": "2026-09-05T12:02:44Z",
+      "observedAt": "2026-09-05T12:02:44Z",
+      "plannedAt": null
+    },
+    {
+      "id": "pr11-14",
+      "name": "PRs #11–14 — rejoin safety and ownership census",
+      "status": "Complete",
+      "verification": "Merged source and documentation increments",
+      "dependency": "Scoped milestone; does not close the full game",
+      "notes": "Safe-ground policy, explicit verification boundary, stronger probes and full-image input candidates. Fresh runtime acceptance remained open.",
+      "completedAt": "2026-09-06T01:54:37Z",
+      "observedAt": "2026-09-06T01:54:37Z",
+      "plannedAt": null
+    },
+    {
+      "id": "publish",
+      "name": "Public status route published",
+      "status": "Complete",
+      "verification": "Original Pages publication verified",
+      "dependency": "Scoped milestone; does not close the full game",
+      "notes": "Dashboard published separately from gameplay; initial source maintenance rules had not reached main.",
+      "completedAt": "2026-09-07T01:30:30Z",
+      "observedAt": "2026-09-07T01:30:30Z",
+      "plannedAt": null
+    },
+    {
+      "id": "pr10",
+      "name": "PR #10 — correct combat address interpretation",
+      "status": "Complete",
+      "verification": "Merged documentation correction",
+      "dependency": "Scoped milestone; does not close the full game",
+      "notes": "Correct combat address map against the community clean-ROM RAM map. public_reference classifications remain research leads.",
+      "completedAt": "2026-09-07T07:20:41Z",
+      "observedAt": "2026-09-07T07:20:41Z",
+      "plannedAt": null
+    },
+    {
+      "id": "inputs-restored",
+      "name": "Owner inputs and historical CDL recovered",
+      "status": "Complete",
+      "verification": "Fresh exact size, digest and CDL CRC checks passed",
+      "dependency": "Scoped milestone; does not close the full game",
+      "notes": "All four required inputs available. Historical CDL verified read-only; no new full-game coverage claimed.",
+      "completedAt": "2026-09-08",
+      "observedAt": "2026-09-08",
+      "plannedAt": null
+    },
+    {
+      "id": "source-check",
+      "name": "Current-source tests, static analyses and adapter build",
+      "status": "Complete",
+      "verification": "Fresh check passed within declared scope",
+      "dependency": "Scoped milestone; does not close the full game",
+      "notes": "111 tests pass; deterministic baseline and guarded adapter build succeed. Static ownership remains unresolved.",
+      "completedAt": "2026-09-08",
+      "observedAt": "2026-09-08",
+      "plannedAt": null
+    },
+    {
+      "id": "boot-check",
+      "name": "Fresh Mesen baseline smoke",
+      "status": "Complete",
+      "verification": "Passed: 600 frames",
+      "dependency": "Scoped milestone; does not close the full game",
+      "notes": "Pinned emulator ran the baseline and produced a valid screenshot. Not dual-player gameplay acceptance.",
+      "completedAt": "2026-09-08",
+      "observedAt": "2026-09-08",
+      "plannedAt": null
+    },
+    {
+      "id": "runtime-check",
+      "name": "Camera/rejoin runtime attempt",
+      "status": "Blocked",
+      "verification": "Failed: exit 255; no report",
+      "dependency": "Scoped milestone; does not close the full game",
+      "notes": "Compiler diagnostic confirms dual_update.lua:3996 exceeds the 200-local-variable limit. Separate stale ROM expectations also need reconciliation.",
+      "completedAt": null,
+      "observedAt": "2026-09-08T07:28:11Z",
+      "plannedAt": null
+    }
+  ]
+}
+</script>
+<script>
+(() => {
+  'use strict';
+  const themeButton = document.getElementById('theme-toggle');
+  function setTheme(theme) {
+    document.documentElement.dataset.theme = theme;
+    themeButton.setAttribute('aria-pressed', String(theme === 'dark'));
+    themeButton.textContent = theme === 'dark' ? 'Light mode' : 'Dark mode';
+    document.querySelector('meta[name="theme-color"]').content = theme === 'dark' ? '#0d171c' : '#f3f5ef';
+  }
+  let savedTheme;
+  try { savedTheme = localStorage.getItem('zelda2mario-theme'); } catch { /* Storage can be denied; the control still works. */ }
+  setTheme(savedTheme === 'dark' ? 'dark' : 'light');
+  themeButton.addEventListener('click', () => {
+    const next = document.documentElement.dataset.theme === 'light' ? 'dark' : 'light';
+    setTheme(next);
+    try { localStorage.setItem('zelda2mario-theme', next); } catch { /* Session-only choice. */ }
+  });
+  document.getElementById('print').addEventListener('click', () => window.print());
+  const tabs = [...document.querySelectorAll('[role="tab"]')];
+  function activate(tab, focus = false) {
+    tabs.forEach(item => {
+      const active = item === tab;
+      item.setAttribute('aria-selected', String(active));
+      item.tabIndex = active ? 0 : -1;
+      document.getElementById(item.getAttribute('aria-controls')).hidden = !active;
+    });
+    if (focus) tab.focus();
+  }
+  tabs.forEach((tab, index) => {
+    tab.addEventListener('click', () => activate(tab));
+    tab.addEventListener('keydown', event => {
+      let next;
+      if (event.key === 'ArrowRight') next = (index + 1) % tabs.length;
+      if (event.key === 'ArrowLeft') next = (index + tabs.length - 1) % tabs.length;
+      if (event.key === 'Home') next = 0;
+      if (event.key === 'End') next = tabs.length - 1;
+      if (next !== undefined) { event.preventDefault(); activate(tabs[next], true); }
+    });
+  });
+  document.querySelector('.skip').addEventListener('click', () => document.getElementById('main').focus());
+  const el = (tag, text, className) => {
+    const node = document.createElement(tag);
+    if (text !== undefined) node.textContent = text;
+    if (className) node.className = className;
+    return node;
+  };
+  const chip = status => { const node = el('span',status,'chip'); node.dataset.status = status; return node; };
+  const dateText = value => value ? (value.length === 10 ? value + ' (date)' : value.replace('T',' ').replace('Z',' UTC')) : 'TBD';
+  try {
+    const data = JSON.parse(document.getElementById('status-data').textContent);
+    if (data.schemaVersion !== 1 || data.phases.length !== 11 || data.m2.length !== 6) throw new Error('Invalid status scope');
+    document.querySelectorAll('.snapshot-date').forEach(node => { node.textContent = dateText(data.meta.checkedAt); });
+    document.getElementById('baseline').textContent = data.meta.sourceCommit.slice(0,7);
+    document.getElementById('summary').textContent = data.meta.summary;
+    document.getElementById('description').textContent = data.meta.description;
+    const metrics = [[data.phases.length,'Roadmap phases'],[data.m2.length,'M2 actions'],[data.gates.find(g => g.id === 'inputs').value,'Inputs verified'],[data.gates.find(g => g.id === 'tests').value,'Source tests passed']];
+    metrics.forEach(([value,label]) => { const card=el('div',undefined,'metric'); card.append(el('strong',String(value)),el('span',label)); document.getElementById('metrics').append(card); });
+    data.gates.forEach(gate => { const card=el('div',undefined,'gate'); card.append(el('strong',gate.name),chip(gate.state),el('p',gate.detail)); document.getElementById('gates').append(card); });
+    data.phases.forEach((phase,index) => { const card=el('div',undefined,'phase-tile'); card.dataset.status=phase.status; card.setAttribute('aria-label',phase.name+': '+phase.status); card.append(el('strong',String(index).padStart(2,'0')),el('span',phase.status)); document.getElementById('phase-board').append(card); });
+    const history = [...data.milestones].sort((a,b) => a.observedAt.localeCompare(b.observedAt));
+    history.forEach((item,index) => {
+      const card=el('li',undefined,'card event'); card.dataset.eventId=item.id;
+      card.append(el('span',String(index+1).padStart(2,'0'),'event-number'));
+      const content=el('div'); const date=el('time',dateText(item.observedAt)); date.dateTime=item.observedAt;
+      content.append(date,el('h3',item.name),chip(item.status),el('p',item.verification),el('p',item.notes)); card.append(content); document.getElementById('events').append(card);
+    });
+    const rows = [];
+    function tableSection(title,note,items) {
+      const section=el('section',undefined,'table-section'); section.append(el('h3',title),el('p',note,'table-note'));
+      const table=el('table'); table.setAttribute('aria-label',title);
+      table.append(el('caption',title,'sr-only'));
+      const head=el('thead'); const header=el('tr');
+      const labels=['Task / milestone','Implementation','Verification evidence','Completion date','Dependencies / notes'];
+      labels.forEach(label => { const th=el('th',label); th.scope='col'; header.append(th); }); head.append(header); table.append(head);
+      const body=el('tbody');
+      items.forEach(item => {
+        const row=el('tr',undefined,'work-row'); row.dataset.workId=item.id; row.dataset.status=item.status;
+        const values=[item.name,item.status,item.verification,dateText(item.completedAt || item.plannedAt),item.dependency];
+        values.forEach((value,index) => {
+          const cell=el('td'); cell.dataset.label=labels[index];
+          cell.append(index===1 ? chip(value) : el(index===0?'strong':'span',value));
+          if(index===3) cell.append(el('small',item.completedAt ? 'Actual · scoped completion' : item.plannedAt ? 'Planned · committed target' : 'Planned · not committed'));
+          if(index===3 && item.observedAt && !item.completedAt) cell.append(el('small','Observed '+dateText(item.observedAt)));
+          if(index===4) cell.append(el('small',item.notes));
+          row.append(cell);
         });
-        buttons.forEach((button) => button.setAttribute("aria-pressed", String(button.dataset.filter === filter)));
-        count.textContent = `Showing ${visible} ${labels[filter]}.`;
-      }
-
-      buttons.forEach((button) => button.addEventListener("click", () => applyFilter(button.dataset.filter)));
-    })();
-  </script>
+        rows.push({node:row,item,section}); body.append(row);
+      });
+      table.append(body); section.append(table); document.getElementById('work-tables').append(section);
+    }
+    tableSection('Completed milestones','Actual dates, chronological. Completion is limited to the explicitly named deliverable.',history.filter(item => item.status === 'Complete'));
+    tableSection('Open verification attempts','Observed dates do not imply completion. These failures remain visible until resolved.',history.filter(item => item.status !== 'Complete'));
+    tableSection('All eleven roadmap phases','Phase 0 is historical foundation completion. The remaining phases have no committed completion dates.',data.phases);
+    tableSection('Remaining M2 queue','Six actions in the authoritative plan’s order. Prior research is not completed implementation.',data.m2);
+    function filterRows() {
+      const selected=document.getElementById('status-filter').value;
+      const search=document.getElementById('work-search').value.trim().toLowerCase();
+      rows.forEach(({node,item}) => { node.hidden=(selected!=='All' && item.status!==selected) || !Object.values(item).join(' ').toLowerCase().includes(search); });
+      document.querySelectorAll('.table-section').forEach(section => { section.hidden=!rows.some(row => row.section===section && !row.node.hidden); });
+      const count=rows.filter(row=>!row.node.hidden).length;
+      document.getElementById('filter-count').textContent=count+' of '+rows.length+' work items shown. Print always includes the complete report.';
+      document.getElementById('empty').hidden=count!==0;
+    }
+    document.getElementById('status-filter').addEventListener('change',filterRows);
+    document.getElementById('work-search').addEventListener('input',filterRows);
+    filterRows();
+    data.evidence.forEach(item => { const card=el('div',undefined,'card'); const dd=el('dd'); dd.append(el('code',item.value),el('p',item.note)); card.append(el('dt',item.name),dd); document.getElementById('evidence-list').append(card); });
+    document.documentElement.dataset.ready='true';
+  } catch (error) {
+    document.getElementById('data-error').hidden=false;
+    console.error('Status data failed to render:',error);
+  }
+})();
+</script>
 </body>
 </html>

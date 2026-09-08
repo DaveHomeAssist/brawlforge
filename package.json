@@ -9,6 +9,7 @@
     "smoke:play": "node test/play-resume-smoke.mjs",
     "smoke:catalog": "node test/catalog-smoke.mjs",
     "smoke:landing": "node test/landing-smoke.mjs",
+    "smoke:zelda2mario": "node test/zelda2mario-smoke.mjs",
     "vercel-build": "node --check \"api/[...path].mjs\" && node --check api/health.mjs && node --check api/sessions.mjs && node --check \"api/sessions/[sessionId].mjs\" && node --check \"api/sessions/[sessionId]/commands.mjs\" && node --check mars/game.js && node --check mars/golden-scene.js && node --check mars/commissioned-art.mjs && node --check mars/art-spec.js && node --check mars/render-contract.mjs && node --check mars/sprite-canvas.mjs && node --check mars/art/validate-assets.mjs && node --check mars/art/visual-regression.mjs && node --check mars/server.mjs && node --check mars/engine.mjs && node --check mars/legacy-import.mjs && node --check mars/sprites.mjs && node --check mars/sim/baseline.mjs && node --check mars/sim/simulate.mjs",
     "art:index": "node mars/art/validate-assets.mjs --runtime-index mars/assets/commissioned/index.json",
     "art:validate": "node mars/art/validate-assets.mjs --verify-runtime-index mars/assets/commissioned/index.json --verify-approval-reports mars/art/reports",
