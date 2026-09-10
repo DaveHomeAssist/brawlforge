@@ -5,7 +5,7 @@
   "type": "module",
   "private": true,
   "scripts": {
-    "test": "node --test test/kit-save.test.mjs test/combat.test.js test/play-core.test.mjs test/play-catalog.test.mjs test/play-system-modules.test.mjs mars/test-engine.mjs mars/test-api.mjs mars/test-vercel-handler.mjs mars/test-legacy-import.mjs mars/test-sprites.mjs mars/test-render-contract.mjs mars/test-art-assets.mjs mars/test-commissioned-art.mjs mars/test-golden-scene.mjs mars/test-client-contract.mjs mars/test-sim.mjs mars/parity/parity.test.mjs",
+    "test": "node --test test/kit-save.test.mjs test/combat.test.js test/play-core.test.mjs test/play-catalog.test.mjs test/play-system-modules.test.mjs test/public-counts.test.mjs mars/test-engine.mjs mars/test-api.mjs mars/test-vercel-handler.mjs mars/test-legacy-import.mjs mars/test-sprites.mjs mars/test-render-contract.mjs mars/test-art-assets.mjs mars/test-commissioned-art.mjs mars/test-golden-scene.mjs mars/test-client-contract.mjs mars/test-sim.mjs mars/parity/parity.test.mjs",
     "smoke:play": "node test/play-resume-smoke.mjs",
     "smoke:catalog": "node test/catalog-smoke.mjs",
     "smoke:landing": "node test/landing-smoke.mjs",
