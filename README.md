@@ -18,14 +18,14 @@ The studio hub at **[mixmash.games](https://mixmash.games)**, served from this r
 | `mars/engine.mjs`, `mars/server.mjs` | Shared MarsScape game engine + the Node authority server (SQLite locally) |
 | `mars/commissioned-art.mjs`, `mars/golden-scene.html` | DEC-79 validated commissioned-art cache and in-renderer golden-scene review surface |
 | `api/` | Vercel serverless functions — the production authority API (Blob-backed sessions) |
-| `test/combat.test.js`, `mars/test-*.mjs` | Node's built-in test runner (`node --test`) — fighter combat math + MarsScape engine/API/handler tests |
-| `.github/workflows/ci.yml` | CI — runs `npm test` on pushes to `gh-pages` touching `src/`, `test/`, or `package*.json` |
+| `test/*.test.{js,mjs}`, `mars/test-*.mjs`, `mars/parity/parity.test.mjs` | Node's built-in test runner (`node --test`) — fighter combat math, the inline combat parity guard, public roster/arena count guard, extracted play modules, MixKit save, MarsScape engine/API/handler/art/parity tests |
+| `.github/workflows/ci.yml` | CI — on pull requests, manual dispatch, and pushes to `gh-pages` touching any game route, `api/`, `src/`, `test/`, the hub pages, the PWA shell, or package files: runs `npm test`, `vercel-build`, the DEC-79 art validation/report/contact-sheet drift gates, `sim`, then the Playwright rails (`art:visual`, `smoke:play`, `smoke:catalog`, `smoke:landing`, `smoke:zelda2mario`) |
 
 ## Commands
 
 ```
 npm install       # once
-npm test          # node --test — combat math + MarsScape engine/API/handler tests
+npm test          # node --test — fighter combat/parity/count guards, play modules, MarsScape engine/API/handler/art/parity tests
 npm run smoke:play      # fighter resume/snapshot smoke test
 npm run smoke:catalog   # catalog runtime smoke tests
 npm run smoke:landing   # five-width landing, keyboard, motion, hit targets, screenshots
